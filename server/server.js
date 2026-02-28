@@ -17,7 +17,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({ origin: true, credentials: true }));
+const allowedOrigins = process.env.CLIENT_URL
+  ? [process.env.CLIENT_URL, "http://localhost:3000"]
+  : ["http://localhost:3000"];
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Serve uploaded voice notes as static files
@@ -38,7 +41,7 @@ app.use("/api/conversations", conversationRoutes);
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: true,
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
   },
 });
