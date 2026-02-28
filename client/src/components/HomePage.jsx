@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsEmojiSmile, BsFilter, BsThreeDotsVertical, BsPersonPlus } from "react-icons/bs";
 import { BiCommentDetail } from "react-icons/bi";
 import { ImAttachment } from "react-icons/im";
-import { IoSend, IoArrowBack } from "react-icons/io5";
+import { IoSend, IoArrowBack, IoLogOutOutline } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useSocketContext } from "../context/SocketContext";
@@ -163,7 +163,7 @@ const HomePage = () => {
 
   // ─── SIDEBAR ─────────────────────────────────────────────
   const renderSidebar = () => (
-    <div className={`w-full md:w-80 bg-white flex flex-col border-r border-gray-200 h-screen ${selectedConversation ? "hidden md:flex" : "flex"}`}>
+    <div className={`w-full md:w-80 bg-white flex flex-col border-r border-gray-200 h-dvh ${selectedConversation ? "hidden md:flex" : "flex"}`}>
       {sidebarView === "profile" ? (
         <Profile handleCloseOpenProfile={() => setSidebarView("chats")} />
       ) : (
@@ -190,10 +190,13 @@ const HomePage = () => {
                 className="cursor-pointer hover:text-gray-700 text-lg"
                 onClick={() => setShowGroupModal(true)}
               />
-              <BsThreeDotsVertical
-                className="cursor-pointer hover:text-gray-700"
+              <button
                 onClick={logout}
-              />
+                className="flex items-center gap-1 text-sm text-red-500 hover:text-red-600 cursor-pointer"
+              >
+                <IoLogOutOutline style={{ fontSize: "18px" }} />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
             </div>
           </div>
 
@@ -262,7 +265,7 @@ const HomePage = () => {
   );
 
   const renderChat = () => (
-    <div className={`flex-1 flex flex-col h-screen ${selectedConversation ? "flex" : "hidden md:flex"}`}>
+    <div className={`flex-1 flex flex-col h-dvh ${selectedConversation ? "flex" : "hidden md:flex"}`}>
       {/* Chat Header */}
       <div className="bg-[#f0f2f5] border-b border-gray-200 px-4 py-2.5 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -378,7 +381,7 @@ const HomePage = () => {
   );
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-dvh overflow-hidden">
       {/* Sidebar */}
       {renderSidebar()}
 
