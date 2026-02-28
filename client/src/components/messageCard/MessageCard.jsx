@@ -16,7 +16,7 @@ const MessageCard = ({ message, isOwn, isGroup }) => {
 
   return (
     <div className={`flex ${isOwn ? "justify-end" : "justify-start"} mb-1`}>
-      <div className={`max-w-[65%] ${isOwn ? "items-end" : "items-start"} flex flex-col`}>
+      <div className={`max-w-[85%] md:max-w-[65%] ${isOwn ? "items-end" : "items-start"} flex flex-col`}>
         {/* Sender name in group chats (only for received messages) */}
         {isGroup && !isOwn && message.sender?.username && (
           <span className="text-xs font-semibold text-[#00a884] mb-0.5 px-2">

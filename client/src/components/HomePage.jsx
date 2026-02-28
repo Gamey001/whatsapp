@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsEmojiSmile, BsFilter, BsThreeDotsVertical, BsPersonPlus } from "react-icons/bs";
 import { BiCommentDetail } from "react-icons/bi";
 import { ImAttachment } from "react-icons/im";
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoArrowBack } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import { useSocketContext } from "../context/SocketContext";
@@ -66,6 +66,11 @@ const HomePage = () => {
     selectConversation(conversation._id);
     setShowAddMember(false);
     inputRef.current?.focus();
+  };
+
+  // Back to chat list (mobile)
+  const handleBack = () => {
+    setSelectedConversation(null);
   };
 
   // Typing indicator debounce
@@ -158,7 +163,7 @@ const HomePage = () => {
 
   // ─── SIDEBAR ─────────────────────────────────────────────
   const renderSidebar = () => (
-    <div className="w-80 bg-white flex flex-col border-r border-gray-200 h-screen">
+    <div className={`w-full md:w-80 bg-white flex flex-col border-r border-gray-200 h-screen ${selectedConversation ? "hidden md:flex" : "flex"}`}>
       {sidebarView === "profile" ? (
         <Profile handleCloseOpenProfile={() => setSidebarView("chats")} />
       ) : (
@@ -241,7 +246,7 @@ const HomePage = () => {
 
   // ─── MAIN CONTENT ────────────────────────────────────────
   const renderWelcome = () => (
-    <div className="flex-1 flex flex-col items-center justify-center bg-[#f0f2f5]">
+    <div className="flex-1 hidden md:flex flex-col items-center justify-center bg-[#f0f2f5]">
       <div className="text-center max-w-md px-8">
         <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-[#ddf1f7] flex items-center justify-center">
           <svg width="80" height="80" viewBox="0 0 24 24" fill="#00a884">
@@ -257,10 +262,13 @@ const HomePage = () => {
   );
 
   const renderChat = () => (
-    <div className="flex-1 flex flex-col h-screen">
+    <div className={`flex-1 flex flex-col h-screen ${selectedConversation ? "flex" : "hidden md:flex"}`}>
       {/* Chat Header */}
       <div className="bg-[#f0f2f5] border-b border-gray-200 px-4 py-2.5 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-3">
+          <button onClick={handleBack} className="md:hidden text-gray-600 mr-1">
+            <IoArrowBack style={{ fontSize: "20px" }} />
+          </button>
           <div className="relative">
             <img
               src={header.avatar}
