@@ -98,6 +98,10 @@ const Register = () => {
               Sign in
             </Link>
           </p>
+
+          <p className="text-center text-xs text-gray-400 mt-3">
+            Chat with demo user <span className="font-semibold text-gray-600">jdee</span>, or create demo users to test
+          </p>
         </div>
       </div>
     </div>
