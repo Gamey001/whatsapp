@@ -17,9 +17,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-const allowedOrigins = process.env.CLIENT_URL
-  ? [process.env.CLIENT_URL, "http://localhost:3000"]
-  : ["http://localhost:3000"];
+const allowedOrigins = [
+  "https://whatsapp-client-ob74.onrender.com",
+  "http://localhost:3000",
+];
+if (process.env.CLIENT_URL) allowedOrigins.push(process.env.CLIENT_URL);
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
