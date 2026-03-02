@@ -165,8 +165,12 @@ export const useSocket = (token, userId) => {
 
   const sendVoiceNote = async (conversationId, blob, duration) => {
     try {
+      // Derive file extension from the blob's actual MIME type
+      const ext = blob.type.includes("mp4") ? ".mp4"
+        : blob.type.includes("ogg") ? ".ogg"
+        : ".webm";
       const formData = new FormData();
-      formData.append("voiceNote", blob, "voiceNote.webm");
+      formData.append("voiceNote", blob, `voiceNote${ext}`);
       formData.append("type", "voiceNote");
       formData.append("duration", duration);
 

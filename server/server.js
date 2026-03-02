@@ -28,7 +28,9 @@ app.use(express.json());
 // Serve uploaded voice notes as static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
   setHeaders: (res, filePath) => {
-    if (filePath.endsWith(".webm")) {
+    if (filePath.endsWith(".mp3")) {
+      res.setHeader("Content-Type", "audio/mpeg");
+    } else if (filePath.endsWith(".webm")) {
       res.setHeader("Content-Type", "audio/webm");
     }
   },

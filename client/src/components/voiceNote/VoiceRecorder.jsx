@@ -12,11 +12,13 @@ const VoiceRecorder = ({ onSend, conversationId }) => {
   const startRecording = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Pick a supported MIME type
+      // Pick a supported MIME type (include mp4 for Safari compatibility)
       const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
         ? "audio/webm;codecs=opus"
         : MediaRecorder.isTypeSupported("audio/webm")
         ? "audio/webm"
+        : MediaRecorder.isTypeSupported("audio/mp4")
+        ? "audio/mp4"
         : "";
       const mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
       mediaRecorderRef.current = mediaRecorder;
@@ -27,7 +29,8 @@ const VoiceRecorder = ({ onSend, conversationId }) => {
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: mediaRecorder.mimeType || "audio/webm" });
+        const actualMime = mediaRecorder.mimeType || "audio/webm";
+        const blob = new Blob(chunksRef.current, { type: actualMime });
         const duration = (Date.now() - startTimeRef.current) / 1000;
         // Stop all tracks to release the mic
         stream.getTracks().forEach((track) => track.stop());

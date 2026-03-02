@@ -1,6 +1,8 @@
+const path = require("path");
 const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const User = require("../models/User");
+const { transcodeToMp3 } = require("../utils/transcodeAudio");
 
 // io instance is set by server.js after Socket.io initializes
 let ioInstance = null;
@@ -120,8 +122,17 @@ const sendMessage = async (req, res) => {
     // Voice note (multipart upload)
     if (req.file) {
       messageData.type = "voiceNote";
-      messageData.voiceNoteUrl = `uploads/${req.file.filename}`;
       messageData.voiceNoteDuration = parseFloat(req.body.duration) || 0;
+
+      // Transcode to MP3 for universal browser playback (Safari doesn't support webm)
+      try {
+        const inputPath = path.join(__dirname, "..", "uploads", req.file.filename);
+        const mp3Path = await transcodeToMp3(inputPath);
+        messageData.voiceNoteUrl = `uploads/${path.basename(mp3Path)}`;
+      } catch (err) {
+        console.error("Transcode failed, using original file:", err.message);
+        messageData.voiceNoteUrl = `uploads/${req.file.filename}`;
+      }
     } else {
       // Text message
       const { content } = req.body;
